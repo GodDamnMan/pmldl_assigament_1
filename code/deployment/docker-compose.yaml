@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+    networks:
+      - ml-network
+
+  app:
+    build: ./app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    networks:
+      - ml-network
+
+  mlflow:
+    image: mlflow/mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow
+    command: mlflow server --host 0.0.0.0 --port 5000
+    networks:
+      - ml-network
+
+networks:
+  ml-network:
+    driver: bridge
