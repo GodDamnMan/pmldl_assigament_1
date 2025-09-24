@@ -9,7 +9,7 @@ import sys
 
 def run_command(command, description):
     """Run a shell command with error handling"""
-    print(f"\n🔧 {description}...")
+    print(f"\n{description}...")
     try:
         result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
         print("Success!")
@@ -37,14 +37,14 @@ def main():
     print("Directory structure created")
     
     # Download and preprocess data
-    if run_command("python code/datasets/download_mnist.py", "Downloading MNIST dataset"):
+    if run_command("python3 code/datasets/download_mnist.py", "Downloading MNIST dataset"):
         print("Data downloaded and preprocessed")
     else:
         print("Failed to download data")
         sys.exit(1)
     
     # Train the model
-    if run_command("python code/models/train_cnn_model.py", "Training CNN model"):
+    if run_command("python3 code/models/train_cnn_model.py", "Training CNN model"):
         print("Model trained and saved")
     else:
         print("Failed to train model")

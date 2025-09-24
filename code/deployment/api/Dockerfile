@@ -11,11 +11,6 @@ RUN apt-get update && apt-get install -y \
 COPY code/deployment/api/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create models directory
-# RUN mkdir -p ./models
-
-# COPY ./models/mnist_cnn_model.h5 ./models
-
 # Copy API code
 COPY ./code/deployment/api .
 

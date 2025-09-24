@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_drawable_canvas import st_canvas
 import requests
 import numpy as np
 from PIL import Image
@@ -40,7 +41,7 @@ if 'api_url' not in st.session_state:
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.header("📤 Upload Image")
+    st.header("Upload Image")
     
     upload_method = st.radio(
         "Choose upload method:",
@@ -68,9 +69,9 @@ with col1:
         st.markdown("Draw a digit in the canvas below:")
         
         # Create a drawing canvas
-        canvas_result = st.canvas(
+        canvas_result = st_canvas(
             stroke_width=10,
-            stroke_color="#FFFFFF",
+            stroke_color="#A5A5A5",
             background_color="#000000",
             height=280,
             width=280,
@@ -84,7 +85,7 @@ with col1:
             drawn_image = drawn_image.resize((28, 28))
             
             # Display the drawn image
-            st.image(drawn_image, caption="Drawn Digit", use_column_width=True)
+            st.image(drawn_image, caption="Drawn Digit", use_container_width=True)
             
             # Convert to bytes
             img_bytes = io.BytesIO()
@@ -92,12 +93,12 @@ with col1:
             img_bytes = img_bytes.getvalue()
 
 with col2:
-    st.header("📊 Prediction Results")
+    st.header("Prediction Results")
     
     if ('uploaded_file' in locals() and uploaded_file is not None) or \
        ('canvas_result' in locals() and canvas_result.image_data is not None):
         
-        if st.button("🚀 Predict Digit", type="primary"):
+        if st.button("Predict Digit", type="primary"):
             with st.spinner("Making prediction..."):
                 try:
                     # Prepare files for API request
@@ -113,7 +114,7 @@ with col2:
                         result = response.json()
                         
                         # Display results
-                        st.success(f"✅ Prediction successful!")
+                        st.success(f"Prediction successful!")
                         
                         # Show predicted digit prominently
                         st.metric(
@@ -149,10 +150,10 @@ with col2:
                         st.pyplot(fig)
                         
                     else:
-                        st.error(f"❌ API Error: {response.status_code} - {response.text}")
+                        st.error(f"API Error: {response.status_code} - {response.text}")
                         
                 except requests.exceptions.RequestException as e:
-                    st.error(f"❌ Connection error: Please make sure the API is running")
+                    st.error(f"Connection error: Please make sure the API is running")
                     st.info("API URL: " + st.session_state.api_url)
                     
     else:
@@ -175,8 +176,8 @@ if st.sidebar.button("Check API Health"):
     try:
         response = requests.get(f"{st.session_state.api_url}/health")
         if response.status_code == 200:
-            st.sidebar.success("✅ API is healthy")
+            st.sidebar.success("API is healthy")
         else:
-            st.sidebar.error("❌ API health check failed")
+            st.sidebar.error("API health check failed")
     except:
-        st.sidebar.error("❌ Cannot connect to API")
+        st.sidebar.error("Cannot connect to API")
