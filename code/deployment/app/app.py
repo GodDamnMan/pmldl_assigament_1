@@ -58,7 +58,8 @@ with col1:
         if uploaded_file is not None:
             # Display uploaded image
             image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image", use_column_width=True)
+            # image = image.resize((28, 28))
+            # st.image(image, caption="Uploaded Image", use_column_width=True)
             
             # Convert to bytes for API
             img_bytes = io.BytesIO()
@@ -71,7 +72,7 @@ with col1:
         # Create a drawing canvas
         canvas_result = st_canvas(
             stroke_width=10,
-            stroke_color="#A5A5A5",
+            stroke_color="#FFFFFF",
             background_color="#000000",
             height=280,
             width=280,
@@ -81,8 +82,9 @@ with col1:
         
         if canvas_result.image_data is not None:
             # Convert canvas result to image
-            drawn_image = Image.fromarray((canvas_result.image_data * 255).astype('uint8'))
-            drawn_image = drawn_image.resize((28, 28))
+            drawn_image = Image.fromarray((canvas_result.image_data).astype('uint8'))
+            # print(canvas_result.image_data)
+            # drawn_image = drawn_image.resize((28, 28))
             
             # Display the drawn image
             st.image(drawn_image, caption="Drawn Digit", use_container_width=True)
